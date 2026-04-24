@@ -202,17 +202,37 @@
 								setAttributes( { thumbnailSize: value } );
 							},
 						} ),
-						el( TextControl, {
-							label: __( 'Custom Image Size Slug', 'ucla-wordpress-plugin-ext' ),
-							help: __(
-								'Optional. Use a registered image size slug to override the dropdown choice.',
-								'ucla-wordpress-plugin-ext'
-							),
-							value: attributes.customThumbnailSize || '',
+						el( RangeControl, {
+							label: __( 'Thumbnail width (px)', 'ucla-wordpress-plugin-ext' ),
+							value: attributes.thumbnailWidth || 0,
 							onChange: function ( value ) {
-								setAttributes( { customThumbnailSize: value } );
+								setAttributes( { thumbnailWidth: value || 0 } );
 							},
-							placeholder: __( 'e.g. card_thumb', 'ucla-wordpress-plugin-ext' ),
+							min: 0,
+							max: 1200,
+							help: __( 'Set to 0 to use natural image width.', 'ucla-wordpress-plugin-ext' ),
+						} ),
+						el( RangeControl, {
+							label: __( 'Thumbnail height (px)', 'ucla-wordpress-plugin-ext' ),
+							value: attributes.thumbnailHeight || 0,
+							onChange: function ( value ) {
+								setAttributes( { thumbnailHeight: value || 0 } );
+							},
+							min: 0,
+							max: 1200,
+							help: __( 'Set to 0 to use natural image height.', 'ucla-wordpress-plugin-ext' ),
+						} ),
+						el( SelectControl, {
+							label: __( 'Thumbnail fit mode', 'ucla-wordpress-plugin-ext' ),
+							value: attributes.thumbnailFit || 'cover',
+							options: [
+								{ label: __( 'Cover', 'ucla-wordpress-plugin-ext' ), value: 'cover' },
+								{ label: __( 'Contain', 'ucla-wordpress-plugin-ext' ), value: 'contain' },
+								{ label: __( 'Crop', 'ucla-wordpress-plugin-ext' ), value: 'crop' },
+							],
+							onChange: function ( value ) {
+								setAttributes( { thumbnailFit: value } );
+							},
 						} ),
 						el( RangeControl, {
 							label: __( 'Offset', 'ucla-wordpress-plugin-ext' ),
@@ -298,8 +318,19 @@
 										var embedded = post._embedded || {};
 										var media = embedded['wp:featuredmedia'] && embedded['wp:featuredmedia'][0];
 										var sizes = media && media.media_details && media.media_details.sizes;
-										var selectedThumbnailSize =
-											attributes.customThumbnailSize || attributes.thumbnailSize || 'thumbnail';
+										var selectedThumbnailSize = attributes.thumbnailSize || 'thumbnail';
+										var thumbnailFit = attributes.thumbnailFit || 'cover';
+										var objectFit = thumbnailFit === 'contain' ? 'contain' : 'cover';
+										var imageStyle = {
+											objectFit: objectFit,
+											objectPosition: 'center center',
+										};
+										if ( attributes.thumbnailWidth > 0 ) {
+											imageStyle.width = attributes.thumbnailWidth + 'px';
+										}
+										if ( attributes.thumbnailHeight > 0 ) {
+											imageStyle.height = attributes.thumbnailHeight + 'px';
+										}
 										var source =
 											attributes.showImage !== false
 												? ( sizes &&
@@ -332,6 +363,7 @@
 															className: 'ucla-card__image',
 															src: source,
 															alt: decodeHtml( post.title && post.title.rendered ),
+															style: imageStyle,
 														} )
 												  )
 												: null,

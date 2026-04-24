@@ -50,9 +50,17 @@
       "type": "string",
       "default": "thumbnail"
     },
-    "customThumbnailSize": {
+    "thumbnailWidth": {
+      "type": "number",
+      "default": 0
+    },
+    "thumbnailHeight": {
+      "type": "number",
+      "default": 0
+    },
+    "thumbnailFit": {
       "type": "string",
-      "default": ""
+      "default": "cover"
     },
     "customClass": {
       "type": "string",

@@ -23,19 +23,22 @@ $show_author      = ! isset( $attributes['showAuthor'] ) || (bool) $attributes['
 $show_description = ! isset( $attributes['showDescription'] ) || (bool) $attributes['showDescription'];
 $show_image       = ! isset( $attributes['showImage'] ) || (bool) $attributes['showImage'];
 $thumbnail_size   = isset( $attributes['thumbnailSize'] ) ? sanitize_key( $attributes['thumbnailSize'] ) : 'thumbnail';
-$custom_thumbnail_size = isset( $attributes['customThumbnailSize'] ) ? sanitize_key( $attributes['customThumbnailSize'] ) : '';
+$thumbnail_width  = isset( $attributes['thumbnailWidth'] ) ? absint( $attributes['thumbnailWidth'] ) : 0;
+$thumbnail_height = isset( $attributes['thumbnailHeight'] ) ? absint( $attributes['thumbnailHeight'] ) : 0;
+$thumbnail_fit    = isset( $attributes['thumbnailFit'] ) ? sanitize_key( $attributes['thumbnailFit'] ) : 'cover';
 $custom_class     = isset( $attributes['customClass'] ) ? sanitize_html_class( $attributes['customClass'] ) : '';
 $card_background_color = isset( $attributes['cardBackgroundColor'] ) ? sanitize_hex_color( $attributes['cardBackgroundColor'] ) : '';
 $enable_animations = ! isset( $attributes['enableAnimations'] ) || (bool) $attributes['enableAnimations'];
 $offset           = isset( $attributes['offset'] ) ? absint( $attributes['offset'] ) : 0;
 
 $allowed_sizes = array_merge( get_intermediate_image_sizes(), array( 'full' ) );
-if ( $custom_thumbnail_size ) {
-	$thumbnail_size = $custom_thumbnail_size;
-}
 if ( ! in_array( $thumbnail_size, $allowed_sizes, true ) ) {
 	$thumbnail_size = 'thumbnail';
 }
+if ( ! in_array( $thumbnail_fit, array( 'cover', 'contain', 'crop' ), true ) ) {
+	$thumbnail_fit = 'cover';
+}
+$object_fit = 'contain' === $thumbnail_fit ? 'contain' : 'cover';
 
 $args = array(
 	'posts_per_page' => min( max( $posts_to_show, 1 ), 20 ),
@@ -73,11 +76,22 @@ ob_start();
 					$enable_animations ? 'ucla-card--animate' : ''
 				)
 			);
+			$image_styles = array(
+				sprintf( 'object-fit: %s', $object_fit ),
+				'object-position: center center',
+			);
+			if ( $thumbnail_width > 0 ) {
+				$image_styles[] = sprintf( 'width: %dpx', $thumbnail_width );
+			}
+			if ( $thumbnail_height > 0 ) {
+				$image_styles[] = sprintf( 'height: %dpx', $thumbnail_height );
+			}
+			$image_style_attr = implode( '; ', $image_styles ) . ';';
 			?>
 			<article class="<?php echo esc_attr( $card_classes ); ?>"<?php echo $card_background_color ? ' style="background-color: ' . esc_attr( $card_background_color ) . ';"' : ''; ?>>
 				<?php if ( $image_url ) : ?>
 					<a class="story-card-image-link" href="<?php echo esc_url( get_permalink() ); ?>">
-						<img class="ucla-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
+						<img class="ucla-card__image" style="<?php echo esc_attr( $image_style_attr ); ?>" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
 					</a>
 				<?php endif; ?>
 				<div class="ucla-card__body">
