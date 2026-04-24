@@ -1,0 +1,193 @@
+.ucla-tec {
+	--ucla-blue: #2774ae;
+	--ucla-blue-darker: #00598c;
+	--ucla-blue-darkest: #003b5c;
+	--ucla-gold: #ffd100;
+	--ucla-text: #333333;
+	--ucla-text-muted: #666666;
+	--ucla-line: #cccccc;
+	--ucla-line-soft: #e5e5e5;
+	--ucla-surface: #f2f2f2;
+	--ucla-surface-soft: #f7f7f7;
+	--ucla-font: Helvetica, Arial, Roboto, sans-serif;
+
+	font-family: var(--ucla-font);
+	color: var(--ucla-text);
+	background: var(--ucla-surface);
+	padding: 56px clamp(24px, 5vw, 64px);
+}
+
+.ucla-tec *,
+.ucla-tec *::before,
+.ucla-tec *::after {
+	box-sizing: border-box;
+}
+
+.ucla-tec__head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 32px;
+	margin: 0 0 32px;
+	flex-wrap: wrap;
+}
+
+.ucla-tec__eyebrow {
+	font-size: 12.8px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ucla-text-muted);
+	margin: 0 0 12px;
+}
+
+.ucla-tec__title {
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 40.5px;
+	margin: 0;
+	letter-spacing: -0.01em;
+	color: var(--ucla-text);
+}
+
+.ucla-tec__view-all {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--ucla-blue-darker);
+	font-weight: 700;
+	text-decoration: none;
+	border-bottom: 2px solid currentcolor;
+	padding-bottom: 2px;
+	font-size: 16px;
+}
+
+.ucla-tec__view-all:hover {
+	color: var(--ucla-blue-darkest);
+}
+
+.ucla-tec__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--ucla-line);
+}
+
+.ucla-tec__item {
+	border-bottom: 1px solid var(--ucla-line);
+}
+
+.ucla-tec__row {
+	display: grid;
+	grid-template-columns: 120px 1fr auto;
+	gap: 32px;
+	align-items: center;
+	padding: 24px 0;
+	color: inherit;
+	text-decoration: none;
+	transition: padding 0.15s, background 0.15s;
+}
+
+.ucla-tec__row:hover {
+	padding-left: 16px;
+	padding-right: 16px;
+	background: var(--ucla-surface-soft);
+}
+
+.ucla-tec__date {
+	text-align: center;
+	border-right: 1px solid var(--ucla-line);
+	padding-right: 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.ucla-tec__month {
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--ucla-blue-darker);
+}
+
+.ucla-tec__day {
+	font-size: 40px;
+	font-weight: 700;
+	line-height: 44px;
+	color: var(--ucla-text);
+}
+
+.ucla-tec__body {
+	min-width: 0;
+}
+
+.ucla-tec__event-title {
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 24px;
+	margin: 0 0 6px;
+	color: var(--ucla-text);
+}
+
+.ucla-tec__row:hover .ucla-tec__event-title {
+	color: var(--ucla-blue-darker);
+}
+
+.ucla-tec__meta {
+	font-size: 14px;
+	color: var(--ucla-text-muted);
+	margin: 0;
+	line-height: 20px;
+}
+
+.ucla-tec__sep {
+	margin: 0 8px;
+	color: var(--ucla-line);
+}
+
+.ucla-tec__cta {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--ucla-blue-darker);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	white-space: nowrap;
+}
+
+.ucla-tec--compact .ucla-tec__row {
+	grid-template-columns: 80px 1fr auto;
+	gap: 20px;
+	padding: 16px 0;
+}
+
+.ucla-tec--compact .ucla-tec__date {
+	padding-right: 20px;
+}
+
+.ucla-tec--compact .ucla-tec__day {
+	font-size: 28px;
+	line-height: 32px;
+}
+
+.ucla-tec--compact .ucla-tec__event-title {
+	font-size: 17px;
+	line-height: 22px;
+}
+
+@media (max-width: 600px) {
+	.ucla-tec__row,
+	.ucla-tec--compact .ucla-tec__row {
+		grid-template-columns: 80px 1fr;
+		gap: 16px;
+	}
+
+	.ucla-tec__cta {
+		grid-column: 1 / -1;
+		justify-self: start;
+	}
+
+	.ucla-tec__date {
+		padding-right: 16px;
+	}
+}

@@ -1,0 +1,35 @@
+.wp-block-ucla-card .ucla-dynamic-story-cards-loading {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.wp-block-ucla-card .ucla-dynamic-story-cards-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.wp-block-ucla-card .ucla-card__body {
+  padding: 1rem;
+}
+
+.wp-block-ucla-card .ucla-card__description {
+  margin: 0.5rem 0 0;
+}
+
+.wp-block-ucla-card .story-card-image-link {
+  display: block;
+  width: 100%;
+  line-height: 0;
+}
+
+.wp-block-ucla-card .story-card-image-link .ucla-card__image {
+  width: 100%;
+  max-width: none;
+  display: block;
+}
+
+.wp-block-ucla-card .ucla-dynamic-story-cards-empty {
+  color: #666;
+}

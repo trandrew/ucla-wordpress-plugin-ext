@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "ucla/featured-card-block",
+  "version": "1.0.0",
+  "title": "Featured Card",
+  "category": "ucla-design-system-components-extended",
+  "icon": "format-aside",
+  "description": "Display a UCLA featured story card from a selected post.",
+  "keywords": ["ucla", "featured", "card"],
+  "textdomain": "ucla-wordpress-plugin-ext",
+  "attributes": {
+    "postType": {
+      "type": "string",
+      "default": "post"
+    },
+    "selectedPostId": {
+      "type": "number"
+    },
+    "selectedCategoryId": {
+      "type": "number"
+    },
+    "mediaSize": {
+      "type": "string",
+      "default": "full"
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSource": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOverlay": {
+      "type": "boolean",
+      "default": true
+    },
+    "isInserterPreview": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "isInserterPreview": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style.css",
+  "editorStyle": "file:./editor.css",
+  "render": "file:./render.php"
+}

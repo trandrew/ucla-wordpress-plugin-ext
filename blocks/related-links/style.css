@@ -1,0 +1,48 @@
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-link,
+.ucla-related-links-list .ucla-related-link {
+  align-items: center;
+  color: #005587;
+  display: inline-flex;
+  font-weight: 700;
+  gap: 0.4rem;
+  margin-bottom: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ucla-related-links-list.is-layout-vertical,
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-links-preview.is-layout-vertical {
+  display: block;
+}
+
+.ucla-related-links-list.is-layout-vertical .ucla-related-link,
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-links-preview.is-layout-vertical .ucla-related-link {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+  margin-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid #dcdcde;
+}
+
+.ucla-related-links-list.is-layout-vertical .ucla-related-link:first-child,
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-links-preview.is-layout-vertical .ucla-related-link:first-child {
+  border-top: 1px solid #dcdcde;
+}
+
+.ucla-related-links-list.is-layout-horizontal .ucla-related-link {
+  margin-right: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-link svg,
+.ucla-related-links-list .ucla-related-link svg {
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
+}
+
+.wp-block-ucla-wordpress-plugin-ext-related-links .ucla-related-link svg path,
+.ucla-related-links-list .ucla-related-link svg path {
+  fill: currentColor;
+}

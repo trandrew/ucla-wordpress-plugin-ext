@@ -1,0 +1,41 @@
+.wp-block-ucla-featured-card-block {
+  width: 100%;
+}
+
+.wp-block-ucla-featured-card-block .ucla-card__story-featured-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay {
+  display: flex;
+  align-items: stretch;
+}
+
+.wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay .ucla-card__story-featured-body {
+  margin-right: 0;
+  width: 58%;
+}
+
+.wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay > a {
+  width: 42%;
+  flex: 0 0 42%;
+}
+
+.wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay .ucla-card__story-featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay {
+    display: block;
+  }
+
+  .wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay .ucla-card__story-featured-body,
+  .wp-block-ucla-featured-card-block.ucla-featured-card--no-overlay > a {
+    width: 100%;
+  }
+}

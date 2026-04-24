@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ucla/tec-events",
+  "version": "1.0.0",
+  "title": "UCLA Events List",
+  "category": "ucla-design-system-components-extended",
+  "icon": "calendar-alt",
+  "description": "Upcoming events list powered by The Events Calendar.",
+  "textdomain": "ucla-wordpress-plugin-ext",
+  "supports": {
+    "align": ["wide", "full"],
+    "spacing": { "margin": true, "padding": true },
+    "html": false,
+    "anchor": true
+  },
+  "attributes": {
+    "eyebrow": { "type": "string", "default": "Events & Programs" },
+    "heading": { "type": "string", "default": "What's happening at UCLA" },
+    "viewAllLabel": { "type": "string", "default": "View all events" },
+    "viewAllUrl": { "type": "string", "default": "" },
+    "count": { "type": "number", "default": 4 },
+    "layout": { "type": "string", "default": "expanded" },
+    "dateRange": { "type": "string", "default": "upcoming" },
+    "startDate": { "type": "string", "default": "" },
+    "endDate": { "type": "string", "default": "" },
+    "categoryIds": { "type": "array", "default": [], "items": { "type": "number" } },
+    "venueIds": { "type": "array", "default": [], "items": { "type": "number" } },
+    "featuredOnly": { "type": "boolean", "default": false },
+    "showDateBlock": { "type": "boolean", "default": true },
+    "showMeta": { "type": "boolean", "default": true },
+    "showHeading": { "type": "boolean", "default": true }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css",
+  "render": "file:./render.php"
+}

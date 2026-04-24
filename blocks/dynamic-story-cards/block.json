@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "ucla/card",
+  "version": "1.0.0",
+  "title": "Dynamic Story Cards",
+  "category": "ucla-design-system-components-extended",
+  "icon": "format-image",
+  "description": "Display selected post types in dynamic UCLA story card layouts.",
+  "keywords": ["ucla", "cards", "story", "dynamic"],
+  "textdomain": "ucla-wordpress-plugin-ext",
+  "attributes": {
+    "postsToShow": {
+      "type": "number",
+      "default": 5
+    },
+    "postType": {
+      "type": "string",
+      "default": "post"
+    },
+    "categories": {
+      "type": "array",
+      "default": []
+    },
+    "tags": {
+      "type": "array",
+      "default": []
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "thumbnailSize": {
+      "type": "string",
+      "default": "thumbnail"
+    },
+    "customClass": {
+      "type": "string",
+      "default": ""
+    },
+    "offset": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style.css",
+  "editorStyle": "file:./editor.css",
+  "render": "file:./render.php"
+}

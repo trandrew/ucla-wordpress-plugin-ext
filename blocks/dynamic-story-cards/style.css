@@ -1,0 +1,26 @@
+.wp-block-ucla-card {
+  width: 100%;
+}
+
+.wp-block-ucla-card.ucla-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.wp-block-ucla-card.ucla-cards-container .ucla-card__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wp-block-ucla-card.ucla-cards-container .story-card-image-link {
+  display: block;
+  width: 100%;
+  line-height: 0;
+}
+
+.wp-block-ucla-card.ucla-cards-container .story-card-image-link .ucla-card__image {
+  width: 100%;
+  max-width: none;
+}

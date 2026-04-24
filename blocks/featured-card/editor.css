@@ -1,0 +1,105 @@
+.ucla-featured-card-inserter-preview-image {
+  width: 100%;
+  min-height: 180px;
+  background-image: url('./preview.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-preview {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  background: #f1f1f1;
+  overflow: hidden;
+  padding: 0;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-preview .ucla-card__story-featured-body {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  background: #fff;
+  padding: 1.5rem;
+  margin: 0 -6.875rem 0 0;
+  box-sizing: border-box;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-preview .ucla-card__story-featured-image {
+  display: block;
+  flex: 0 0 42%;
+  width: 42%;
+  max-width: 42%;
+  height: auto;
+  object-fit: cover;
+  margin-left: auto;
+  align-self: stretch;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-preview.ucla-featured-card--no-overlay .ucla-card__story-featured-body {
+  margin-right: 0;
+  width: 58%;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-preview.ucla-featured-card--no-overlay .ucla-card__story-featured-image {
+  flex-basis: 42%;
+  width: 42%;
+  max-width: 42%;
+}
+
+.wp-block-ucla-featured-card-block .ucla-featured-card-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wp-block-ucla-featured-card-block .ucla-card__date {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.wp-block-ucla-featured-card-block .ucla-card__story-featured-title {
+  margin: 0 0 1rem;
+  line-height: 1.08;
+  color: #005587;
+  font-size: clamp(1.95rem, 1.45rem + 1.15vw, 2.75rem);
+  font-weight: 700;
+}
+
+.wp-block-ucla-featured-card-block .ucla-card__story-featured-summary {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 1.05rem + 0.35vw, 1.45rem);
+  line-height: 1.4;
+  color: #222;
+}
+
+.wp-block-ucla-featured-card-block .ucla-card__story-author,
+.wp-block-ucla-featured-card-block .ucla-card__story-featured-source {
+  margin: 0.5rem 0 0;
+  color: #3b3b3b;
+}
+
+@media (max-width: 900px) {
+  .wp-block-ucla-featured-card-block .ucla-featured-card-preview {
+    flex-direction: column-reverse;
+    min-height: 0;
+  }
+
+  .wp-block-ucla-featured-card-block .ucla-featured-card-preview .ucla-card__story-featured-body {
+    width: 100%;
+    margin: 0;
+    padding: 1.25rem;
+  }
+
+  .wp-block-ucla-featured-card-block .ucla-featured-card-preview.ucla-featured-card--no-overlay .ucla-card__story-featured-body {
+    width: 100%;
+  }
+
+  .wp-block-ucla-featured-card-block .ucla-featured-card-preview .ucla-card__story-featured-image {
+    width: 100%;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,15 @@
+/* Editor-only tweaks for UCLA Events List block. */
+.ucla-tec.is-editor-sample {
+	position: relative;
+	outline: 1px dashed rgba(39, 116, 174, 0.5);
+	outline-offset: -1px;
+}
+
+.ucla-tec__sample-notice {
+	font-size: 12px;
+	color: #5a4500;
+	background: #fff0a5;
+	padding: 8px 12px;
+	margin: 0 0 16px;
+	border-left: 4px solid #ffd100;
+}

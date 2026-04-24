@@ -1,0 +1,60 @@
+.wp-block-ucla-wordpress-plugin-ext-related-links {
+  padding: 0;
+}
+
+.ucla-related-links-inserter-preview-image {
+  width: 100%;
+  min-height: 140px;
+  background-image: url('./preview.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.ucla-related-links-control-item {
+  background: #f6f7f7;
+  border: 1px solid #dcdcde;
+  margin-bottom: 12px;
+  padding: 10px;
+}
+
+.ucla-related-links-reorder-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ucla-related-links-preview .ucla-related-link {
+  align-items: center;
+  color: #005587;
+  display: inline-flex;
+  font-weight: 700;
+  gap: 0.4rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-right: 16px;
+}
+
+.ucla-related-links-preview.is-layout-vertical .ucla-related-link {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+  margin-right: 0;
+  padding: 0.75rem 0;
+  border-top: 0;
+  border-bottom: 1px solid #dcdcde;
+}
+
+.ucla-related-links-preview.is-layout-vertical .ucla-related-link:first-child {
+  border-top: 1px solid #dcdcde;
+}
+
+.ucla-related-links-preview .ucla-related-link svg {
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
+}
+
+.ucla-related-links-preview .ucla-related-link svg path {
+  fill: currentColor;
+}
