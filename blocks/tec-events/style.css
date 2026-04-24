@@ -74,7 +74,12 @@
 }
 
 .ucla-tec__item {
+	list-style: none;
 	border-bottom: 1px solid var(--ucla-line);
+}
+
+.ucla-tec__item::marker {
+	content: '';
 }
 
 .ucla-tec__row {
