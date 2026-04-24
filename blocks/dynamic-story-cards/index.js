@@ -44,6 +44,11 @@
 		return Number.isFinite( parsed ) && parsed > 0 ? parsed : 0;
 	}
 
+	function preventEditorNavigation( event ) {
+		event.preventDefault();
+		event.stopPropagation();
+	}
+
 	blocks.registerBlockType( 'ucla/card', {
 		edit: function ( props ) {
 			var attributes = props.attributes;
@@ -362,7 +367,11 @@
 											source
 												? el(
 														'a',
-														{ href: post.link, className: 'story-card-image-link' },
+														{
+															href: post.link,
+															className: 'story-card-image-link',
+															onClick: preventEditorNavigation,
+														},
 														el( 'img', {
 															className: 'ucla-card__image',
 															src: source,
@@ -391,7 +400,11 @@
 															{ className: 'ucla-card__title' },
 															el(
 																'a',
-																{ className: 'ucla-card__title-link', href: post.link },
+																{
+																	className: 'ucla-card__title-link',
+																	href: post.link,
+																	onClick: preventEditorNavigation,
+																},
 																decodeHtml( post.title && post.title.rendered )
 															)
 													  )
