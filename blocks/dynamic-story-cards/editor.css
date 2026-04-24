@@ -25,9 +25,10 @@
   overflow: hidden;
 }
 
-.wp-block-ucla-card .story-card-image-link .ucla-card__image {
+.wp-block-ucla-card .story-card-image-link .ucla-dynamic-story-cards__image {
   width: 100%;
   max-width: 100%;
+  height: auto;
   display: block;
 }
 

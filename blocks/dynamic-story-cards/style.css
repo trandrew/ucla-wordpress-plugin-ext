@@ -8,12 +8,6 @@
   gap: 1rem;
 }
 
-.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card__image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
 .wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .story-card-image-link {
   display: block;
   width: 100%;
@@ -21,9 +15,11 @@
   overflow: hidden;
 }
 
-.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .story-card-image-link .ucla-card__image {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .story-card-image-link .ucla-dynamic-story-cards__image {
+  display: block;
   width: 100%;
   max-width: 100%;
+  height: auto;
 }
 
 .wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card--animate {

@@ -377,7 +377,10 @@
 														? ' ucla-card--animate'
 														: '' ),
 												style: attributes.cardBackgroundColor
-													? { '--ucla-dynamic-card-bg': attributes.cardBackgroundColor }
+													? {
+															'--ucla-dynamic-card-bg': attributes.cardBackgroundColor,
+															backgroundColor: attributes.cardBackgroundColor,
+													  }
 													: undefined,
 											},
 											source
@@ -389,7 +392,7 @@
 															onClick: preventEditorNavigation,
 														},
 														el( 'img', {
-															className: 'ucla-card__image',
+															className: 'ucla-card__image ucla-dynamic-story-cards__image',
 															src: source,
 															alt: decodeHtml( post.title && post.title.rendered ),
 															style: imageStyle,

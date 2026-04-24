@@ -83,9 +83,6 @@ ob_start();
 							$medium_fallback = image_get_intermediate_size( $thumbnail_id, 'medium' );
 							if ( ! empty( $medium_fallback['url'] ) ) {
 								$image_url = $medium_fallback['url'];
-							} else {
-								$full_fallback = wp_get_attachment_image_src( $thumbnail_id, 'full' );
-								$image_url = ! empty( $full_fallback[0] ) ? $full_fallback[0] : '';
 							}
 						}
 					}
@@ -111,11 +108,19 @@ ob_start();
 			}
 			$image_style_attr = implode( '; ', $image_styles ) . ';';
 			?>
-			<?php $card_style_attr = $card_background_color ? sprintf( '--ucla-dynamic-card-bg:%s;', $card_background_color ) : ''; ?>
+			<?php
+			$card_style_attr = '';
+			if ( $card_background_color ) {
+				$card_style_attr = sprintf(
+					'--ucla-dynamic-card-bg:%1$s;background-color:%1$s;',
+					$card_background_color
+				);
+			}
+			?>
 			<article class="<?php echo esc_attr( $card_classes ); ?>"<?php echo $card_style_attr ? ' style="' . esc_attr( $card_style_attr ) . '"' : ''; ?>>
 				<?php if ( $image_url ) : ?>
 					<a class="story-card-image-link" href="<?php echo esc_url( get_permalink() ); ?>">
-						<img class="ucla-card__image" style="<?php echo esc_attr( $image_style_attr ); ?>" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
+						<img class="ucla-card__image ucla-dynamic-story-cards__image" style="<?php echo esc_attr( $image_style_attr ); ?>" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
 					</a>
 				<?php endif; ?>
 				<div class="ucla-card__body">
