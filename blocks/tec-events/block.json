@@ -30,7 +30,8 @@
     "showDateBlock": { "type": "boolean", "default": true },
     "showMeta": { "type": "boolean", "default": true },
     "showHeading": { "type": "boolean", "default": true },
-    "backgroundColor": { "type": "string", "default": "" }
+    "backgroundColor": { "type": "string", "default": "" },
+    "style": { "type": "object" }
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./editor.css",
