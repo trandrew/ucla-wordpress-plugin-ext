@@ -79,6 +79,7 @@ ob_start();
 			$image_styles = array(
 				sprintf( 'object-fit: %s', $object_fit ),
 				'object-position: center center',
+				'max-width: 100%',
 			);
 			if ( $thumbnail_width > 0 ) {
 				$image_styles[] = sprintf( 'width: %dpx', $thumbnail_width );

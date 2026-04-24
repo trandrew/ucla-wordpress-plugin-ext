@@ -22,11 +22,12 @@
   display: block;
   width: 100%;
   line-height: 0;
+  overflow: hidden;
 }
 
 .wp-block-ucla-card .story-card-image-link .ucla-card__image {
   width: 100%;
-  max-width: none;
+  max-width: 100%;
   display: block;
 }
 

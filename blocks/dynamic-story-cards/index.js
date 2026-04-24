@@ -39,6 +39,11 @@
 		return width > 0 && height > 0 ? label + ' (' + width + 'x' + height + ')' : label;
 	}
 
+	function toPositiveInt( value ) {
+		var parsed = parseInt( value, 10 );
+		return Number.isFinite( parsed ) && parsed > 0 ? parsed : 0;
+	}
+
 	blocks.registerBlockType( 'ucla/card', {
 		edit: function ( props ) {
 			var attributes = props.attributes;
@@ -202,25 +207,23 @@
 								setAttributes( { thumbnailSize: value } );
 							},
 						} ),
-						el( RangeControl, {
+						el( TextControl, {
 							label: __( 'Thumbnail width (px)', 'ucla-wordpress-plugin-ext' ),
-							value: attributes.thumbnailWidth || 0,
+							value: attributes.thumbnailWidth ? String( attributes.thumbnailWidth ) : '',
 							onChange: function ( value ) {
-								setAttributes( { thumbnailWidth: value || 0 } );
+								setAttributes( { thumbnailWidth: toPositiveInt( value ) } );
 							},
-							min: 0,
-							max: 1200,
-							help: __( 'Set to 0 to use natural image width.', 'ucla-wordpress-plugin-ext' ),
+							help: __( 'Leave empty to use natural image width.', 'ucla-wordpress-plugin-ext' ),
+							placeholder: '300',
 						} ),
-						el( RangeControl, {
+						el( TextControl, {
 							label: __( 'Thumbnail height (px)', 'ucla-wordpress-plugin-ext' ),
-							value: attributes.thumbnailHeight || 0,
+							value: attributes.thumbnailHeight ? String( attributes.thumbnailHeight ) : '',
 							onChange: function ( value ) {
-								setAttributes( { thumbnailHeight: value || 0 } );
+								setAttributes( { thumbnailHeight: toPositiveInt( value ) } );
 							},
-							min: 0,
-							max: 1200,
-							help: __( 'Set to 0 to use natural image height.', 'ucla-wordpress-plugin-ext' ),
+							help: __( 'Leave empty to use natural image height.', 'ucla-wordpress-plugin-ext' ),
+							placeholder: '220',
 						} ),
 						el( SelectControl, {
 							label: __( 'Thumbnail fit mode', 'ucla-wordpress-plugin-ext' ),
@@ -324,6 +327,7 @@
 										var imageStyle = {
 											objectFit: objectFit,
 											objectPosition: 'center center',
+											maxWidth: '100%',
 										};
 										if ( attributes.thumbnailWidth > 0 ) {
 											imageStyle.width = attributes.thumbnailWidth + 'px';
