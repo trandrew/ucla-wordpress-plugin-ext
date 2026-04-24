@@ -60,7 +60,7 @@ $query = new WP_Query( $args );
 
 ob_start();
 ?>
-<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ucla ucla-cards-container' ) ); ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'ucla ucla-cards-container ucla-dynamic-story-cards' ) ); ?>>
 	<?php if ( $query->have_posts() ) : ?>
 		<?php while ( $query->have_posts() ) : ?>
 			<?php
@@ -89,7 +89,8 @@ ob_start();
 			}
 			$image_style_attr = implode( '; ', $image_styles ) . ';';
 			?>
-			<article class="<?php echo esc_attr( $card_classes ); ?>"<?php echo $card_background_color ? ' style="background-color: ' . esc_attr( $card_background_color ) . ';"' : ''; ?>>
+			<?php $card_style_attr = $card_background_color ? sprintf( '--ucla-dynamic-card-bg:%s;', $card_background_color ) : ''; ?>
+			<article class="<?php echo esc_attr( $card_classes ); ?>"<?php echo $card_style_attr ? ' style="' . esc_attr( $card_style_attr ) . '"' : ''; ?>>
 				<?php if ( $image_url ) : ?>
 					<a class="story-card-image-link" href="<?php echo esc_url( get_permalink() ); ?>">
 						<img class="ucla-card__image" style="<?php echo esc_attr( $image_style_attr ); ?>" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />

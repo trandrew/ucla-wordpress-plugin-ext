@@ -38,3 +38,7 @@
 .wp-block-ucla-card .ucla-card--animate {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.wp-block-ucla-card .ucla-dynamic-story-cards .ucla-card__story {
+  background-color: var(--ucla-dynamic-card-bg, transparent);
+}

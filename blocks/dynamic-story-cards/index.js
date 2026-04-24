@@ -320,7 +320,7 @@
 					? el( 'div', { className: 'ucla-dynamic-story-cards-loading' }, el( Spinner ) )
 					: el(
 							'div',
-							{ className: 'ucla-cards-container ucla-dynamic-story-cards-preview' },
+							{ className: 'ucla-cards-container ucla-dynamic-story-cards ucla-dynamic-story-cards-preview' },
 							posts.length
 								? posts.map( function ( post ) {
 										var embedded = post._embedded || {};
@@ -361,7 +361,7 @@
 														? ' ucla-card--animate'
 														: '' ),
 												style: attributes.cardBackgroundColor
-													? { backgroundColor: attributes.cardBackgroundColor }
+													? { '--ucla-dynamic-card-bg': attributes.cardBackgroundColor }
 													: undefined,
 											},
 											source

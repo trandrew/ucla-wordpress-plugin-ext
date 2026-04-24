@@ -2,35 +2,39 @@
   width: 100%;
 }
 
-.wp-block-ucla-card.ucla-cards-container {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1rem;
 }
 
-.wp-block-ucla-card.ucla-cards-container .ucla-card__image {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card__image {
   width: 100%;
   height: auto;
   display: block;
 }
 
-.wp-block-ucla-card.ucla-cards-container .story-card-image-link {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .story-card-image-link {
   display: block;
   width: 100%;
   line-height: 0;
   overflow: hidden;
 }
 
-.wp-block-ucla-card.ucla-cards-container .story-card-image-link .ucla-card__image {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .story-card-image-link .ucla-card__image {
   width: 100%;
   max-width: 100%;
 }
 
-.wp-block-ucla-card.ucla-cards-container .ucla-card--animate {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card--animate {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.wp-block-ucla-card.ucla-cards-container .ucla-card--animate:hover {
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card--animate:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.wp-block-ucla-card.ucla-dynamic-story-cards.ucla-cards-container .ucla-card__story {
+  background-color: var(--ucla-dynamic-card-bg, transparent);
 }
