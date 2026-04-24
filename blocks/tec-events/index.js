@@ -11,6 +11,7 @@
 		FormTokenField,
 		Placeholder,
 		Spinner,
+		ColorPalette,
 	} = wp.components;
 	const ServerSideRender = wp.serverSideRender;
 	const { createElement: el, Fragment, useState, useEffect } = wp.element;
@@ -191,6 +192,22 @@
 								setAttributes( { venueIds: ids } );
 							},
 						} )
+					),
+					el(
+						PanelBody,
+						{ title: __( 'Styles', 'ucla-wordpress-plugin-ext' ), initialOpen: false },
+						el( 'p', null, __( 'Background color', 'ucla-wordpress-plugin-ext' ) ),
+						el( ColorPalette, {
+							value: attributes.backgroundColor || '',
+							colors: [
+								{ name: 'Light Gray', color: '#f2f2f2' },
+								{ name: 'White', color: '#ffffff' },
+								{ name: 'UCLA Blue', color: '#2774ae' },
+								{ name: 'UCLA Gold', color: '#ffd100' },
+							],
+							onChange: ( value ) => setAttributes( { backgroundColor: value || '' } ),
+							clearable: true,
+						} )
 					)
 				),
 				el(
@@ -251,7 +268,10 @@
 
 		return el(
 			'section',
-			{ className: `ucla-tec ucla-tec--${ attributes.layout } is-editor-sample` },
+			{
+				className: `ucla-tec ucla-tec--${ attributes.layout } is-editor-sample`,
+				style: attributes.backgroundColor ? { backgroundColor: attributes.backgroundColor } : undefined,
+			},
 			el(
 				'div',
 				{ className: 'ucla-tec__sample-notice' },

@@ -24,3 +24,12 @@
   width: 100%;
   max-width: none;
 }
+
+.wp-block-ucla-card.ucla-cards-container .ucla-card--animate {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wp-block-ucla-card.ucla-cards-container .ucla-card--animate:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}

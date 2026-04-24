@@ -10,6 +10,7 @@
 	var TextControl = components.TextControl;
 	var RangeControl = components.RangeControl;
 	var Spinner = components.Spinner;
+	var ColorPalette = components.ColorPalette;
 	var __ = i18n.__;
 
 	function decodeHtml( text ) {
@@ -263,6 +264,27 @@
 							onChange: function ( value ) {
 								setAttributes( { showImage: !! value } );
 							},
+						} ),
+						el( ToggleControl, {
+							label: __( 'Enable card hover animations', 'ucla-wordpress-plugin-ext' ),
+							checked: attributes.enableAnimations !== false,
+							onChange: function ( value ) {
+								setAttributes( { enableAnimations: !! value } );
+							},
+						} ),
+						el( 'p', null, __( 'Card background color', 'ucla-wordpress-plugin-ext' ) ),
+						el( ColorPalette, {
+							value: attributes.cardBackgroundColor || '',
+							colors: [
+								{ name: 'White', color: '#ffffff' },
+								{ name: 'Light Gray', color: '#f7f7f7' },
+								{ name: 'UCLA Blue', color: '#2774ae' },
+								{ name: 'UCLA Gold', color: '#ffd100' },
+							],
+							onChange: function ( value ) {
+								setAttributes( { cardBackgroundColor: value || '' } );
+							},
+							clearable: true,
 						} )
 					)
 				),
@@ -291,7 +313,17 @@
 
 										return el(
 											'article',
-											{ key: post.id, className: 'ucla-card ucla-card__story' },
+											{
+												key: post.id,
+												className:
+													'ucla-card ucla-card__story' +
+													( attributes.enableAnimations !== false
+														? ' ucla-card--animate'
+														: '' ),
+												style: attributes.cardBackgroundColor
+													? { backgroundColor: attributes.cardBackgroundColor }
+													: undefined,
+											},
 											source
 												? el(
 														'a',

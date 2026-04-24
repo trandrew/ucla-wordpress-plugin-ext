@@ -58,6 +58,14 @@
       "type": "string",
       "default": ""
     },
+    "cardBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "enableAnimations": {
+      "type": "boolean",
+      "default": true
+    },
     "offset": {
       "type": "number",
       "default": 0

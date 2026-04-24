@@ -25,6 +25,8 @@ $show_image       = ! isset( $attributes['showImage'] ) || (bool) $attributes['s
 $thumbnail_size   = isset( $attributes['thumbnailSize'] ) ? sanitize_key( $attributes['thumbnailSize'] ) : 'thumbnail';
 $custom_thumbnail_size = isset( $attributes['customThumbnailSize'] ) ? sanitize_key( $attributes['customThumbnailSize'] ) : '';
 $custom_class     = isset( $attributes['customClass'] ) ? sanitize_html_class( $attributes['customClass'] ) : '';
+$card_background_color = isset( $attributes['cardBackgroundColor'] ) ? sanitize_hex_color( $attributes['cardBackgroundColor'] ) : '';
+$enable_animations = ! isset( $attributes['enableAnimations'] ) || (bool) $attributes['enableAnimations'];
 $offset           = isset( $attributes['offset'] ) ? absint( $attributes['offset'] ) : 0;
 
 $allowed_sizes = array_merge( get_intermediate_image_sizes(), array( 'full' ) );
@@ -64,8 +66,15 @@ ob_start();
 				continue;
 			}
 			$image_url = $show_image ? get_the_post_thumbnail_url( get_the_ID(), $thumbnail_size ) : '';
+			$card_classes = trim(
+				sprintf(
+					'ucla-card ucla-card__story %s %s',
+					$custom_class,
+					$enable_animations ? 'ucla-card--animate' : ''
+				)
+			);
 			?>
-			<article class="ucla-card ucla-card__story <?php echo esc_attr( $custom_class ); ?>">
+			<article class="<?php echo esc_attr( $card_classes ); ?>"<?php echo $card_background_color ? ' style="background-color: ' . esc_attr( $card_background_color ) . ';"' : ''; ?>>
 				<?php if ( $image_url ) : ?>
 					<a class="story-card-image-link" href="<?php echo esc_url( get_permalink() ); ?>">
 						<img class="ucla-card__image" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />

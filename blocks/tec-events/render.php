@@ -29,6 +29,7 @@ $defaults = array(
 	'showDateBlock' => true,
 	'showMeta'      => true,
 	'showHeading'   => true,
+	'backgroundColor' => '',
 );
 
 $attrs = wp_parse_args( is_array( $attributes ) ? $attributes : array(), $defaults );
@@ -36,6 +37,7 @@ $attrs = wp_parse_args( is_array( $attributes ) ? $attributes : array(), $defaul
 $layout = in_array( $attrs['layout'], array( 'expanded', 'compact' ), true ) ? $attrs['layout'] : 'expanded';
 $date_range = in_array( $attrs['dateRange'], array( 'upcoming', 'this_month', 'next_30', 'custom' ), true ) ? $attrs['dateRange'] : 'upcoming';
 $count = max( 1, (int) $attrs['count'] );
+$background_color = ! empty( $attrs['backgroundColor'] ) ? sanitize_hex_color( $attrs['backgroundColor'] ) : '';
 
 $query_args = array(
 	'posts_per_page' => $count,
@@ -90,11 +92,14 @@ if ( empty( $events ) ) {
 	return '';
 }
 
-$wrapper_attributes = get_block_wrapper_attributes(
-	array(
-		'class' => sprintf( 'ucla-tec ucla-tec--%s', sanitize_html_class( $layout ) ),
-	)
+$wrapper_args = array(
+	'class' => sprintf( 'ucla-tec ucla-tec--%s', sanitize_html_class( $layout ) ),
 );
+if ( $background_color ) {
+	$wrapper_args['style'] = sprintf( 'background-color: %s;', $background_color );
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_args );
 
 ob_start();
 ?>

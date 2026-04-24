@@ -29,7 +29,8 @@
     "featuredOnly": { "type": "boolean", "default": false },
     "showDateBlock": { "type": "boolean", "default": true },
     "showMeta": { "type": "boolean", "default": true },
-    "showHeading": { "type": "boolean", "default": true }
+    "showHeading": { "type": "boolean", "default": true },
+    "backgroundColor": { "type": "string", "default": "" }
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./editor.css",
