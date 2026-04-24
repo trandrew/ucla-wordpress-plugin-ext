@@ -56,11 +56,11 @@
 		return label;
 	}
 
-	function getFeaturedImageUrl( post, mediaSize ) {
+	function getFeaturedImageUrl( post, mediaSize, customMediaSize ) {
 		if ( ! post ) {
 			return '';
 		}
-		var selectedSize = mediaSize || 'full';
+		var selectedSize = customMediaSize || mediaSize || 'full';
 		var imageBySize = post.featured_media_src_urls || {};
 		return imageBySize[ selectedSize ] || post.featured_media_src_url || '';
 	}
@@ -281,6 +281,18 @@
 								setAttributes( { mediaSize: value } );
 							},
 						} ),
+						el( TextControl, {
+							label: __( 'Custom Image Size Slug', 'ucla-wordpress-plugin-ext' ),
+							help: __(
+								'Optional. Use a registered image size slug to override the dropdown choice.',
+								'ucla-wordpress-plugin-ext'
+							),
+							value: attributes.customMediaSize || '',
+							onChange: function ( value ) {
+								setAttributes( { customMediaSize: value } );
+							},
+							placeholder: __( 'e.g. card_thumb', 'ucla-wordpress-plugin-ext' ),
+						} ),
 						el( ToggleControl, {
 							label: __( 'Overlay content box', 'ucla-wordpress-plugin-ext' ),
 							checked: showOverlay,
@@ -375,10 +387,14 @@
 										)
 									: null
 							),
-							getFeaturedImageUrl( post, attributes.mediaSize )
+							getFeaturedImageUrl( post, attributes.mediaSize, attributes.customMediaSize )
 								? el( 'img', {
 										className: 'ucla-card__story-featured-image',
-										src: getFeaturedImageUrl( post, attributes.mediaSize ),
+										src: getFeaturedImageUrl(
+											post,
+											attributes.mediaSize,
+											attributes.customMediaSize
+										),
 										alt: decodeHtml( post.title && post.title.rendered ),
 									} )
 								: null

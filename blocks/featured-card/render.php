@@ -18,8 +18,12 @@ $show_date   = ! isset( $attributes['showDate'] ) || (bool) $attributes['showDat
 $show_overlay = ! isset( $attributes['showOverlay'] ) || (bool) $attributes['showOverlay'];
 $category_id = isset( $attributes['selectedCategoryId'] ) ? absint( $attributes['selectedCategoryId'] ) : 0;
 $media_size  = isset( $attributes['mediaSize'] ) ? sanitize_key( $attributes['mediaSize'] ) : 'full';
+$custom_media_size = isset( $attributes['customMediaSize'] ) ? sanitize_key( $attributes['customMediaSize'] ) : '';
 
 $allowed_media_sizes = array_merge( get_intermediate_image_sizes(), array( 'full' ) );
+if ( $custom_media_size ) {
+	$media_size = $custom_media_size;
+}
 if ( ! in_array( $media_size, $allowed_media_sizes, true ) ) {
 	$media_size = 'full';
 }

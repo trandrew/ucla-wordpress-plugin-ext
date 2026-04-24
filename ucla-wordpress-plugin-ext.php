@@ -180,7 +180,7 @@ function ucla_plugin_ext_register_featured_image_rest_fields() {
 					return array();
 				}
 
-				$sizes = array( 'thumbnail', 'medium', 'large', 'full' );
+				$sizes = array_merge( get_intermediate_image_sizes(), array( 'full' ) );
 				$urls  = array();
 
 				foreach ( $sizes as $size ) {
@@ -216,6 +216,15 @@ function ucla_plugin_ext_render_featured_card_block( $attributes, $content, $blo
 
 function ucla_plugin_ext_render_hero_banner_block( $attributes, $content, $block ) {
 	$template_file = plugin_dir_path( __FILE__ ) . 'blocks/hero-banner/render.php';
+	if ( ! file_exists( $template_file ) ) {
+		return '';
+	}
+
+	return require $template_file;
+}
+
+function ucla_plugin_ext_render_dynamic_story_cards_block( $attributes, $content, $block ) {
+	$template_file = plugin_dir_path( __FILE__ ) . 'blocks/dynamic-story-cards/render.php';
 	if ( ! file_exists( $template_file ) ) {
 		return '';
 	}

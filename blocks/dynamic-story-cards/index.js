@@ -201,6 +201,18 @@
 								setAttributes( { thumbnailSize: value } );
 							},
 						} ),
+						el( TextControl, {
+							label: __( 'Custom Image Size Slug', 'ucla-wordpress-plugin-ext' ),
+							help: __(
+								'Optional. Use a registered image size slug to override the dropdown choice.',
+								'ucla-wordpress-plugin-ext'
+							),
+							value: attributes.customThumbnailSize || '',
+							onChange: function ( value ) {
+								setAttributes( { customThumbnailSize: value } );
+							},
+							placeholder: __( 'e.g. card_thumb', 'ucla-wordpress-plugin-ext' ),
+						} ),
 						el( RangeControl, {
 							label: __( 'Offset', 'ucla-wordpress-plugin-ext' ),
 							value: attributes.offset || 0,
@@ -264,11 +276,13 @@
 										var embedded = post._embedded || {};
 										var media = embedded['wp:featuredmedia'] && embedded['wp:featuredmedia'][0];
 										var sizes = media && media.media_details && media.media_details.sizes;
+										var selectedThumbnailSize =
+											attributes.customThumbnailSize || attributes.thumbnailSize || 'thumbnail';
 										var source =
 											attributes.showImage !== false
 												? ( sizes &&
-														sizes[ attributes.thumbnailSize || 'thumbnail' ] &&
-														sizes[ attributes.thumbnailSize || 'thumbnail' ].source_url ) ||
+														sizes[ selectedThumbnailSize ] &&
+														sizes[ selectedThumbnailSize ].source_url ) ||
 												  ( media && media.source_url ) ||
 												  ''
 												: '';

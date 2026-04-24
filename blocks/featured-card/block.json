@@ -24,6 +24,10 @@
       "type": "string",
       "default": "full"
     },
+    "customMediaSize": {
+      "type": "string",
+      "default": ""
+    },
     "showTitle": {
       "type": "boolean",
       "default": true

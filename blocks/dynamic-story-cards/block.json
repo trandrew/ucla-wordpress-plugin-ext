@@ -50,6 +50,10 @@
       "type": "string",
       "default": "thumbnail"
     },
+    "customThumbnailSize": {
+      "type": "string",
+      "default": ""
+    },
     "customClass": {
       "type": "string",
       "default": ""

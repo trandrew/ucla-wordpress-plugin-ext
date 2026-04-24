@@ -23,10 +23,14 @@ $show_author      = ! isset( $attributes['showAuthor'] ) || (bool) $attributes['
 $show_description = ! isset( $attributes['showDescription'] ) || (bool) $attributes['showDescription'];
 $show_image       = ! isset( $attributes['showImage'] ) || (bool) $attributes['showImage'];
 $thumbnail_size   = isset( $attributes['thumbnailSize'] ) ? sanitize_key( $attributes['thumbnailSize'] ) : 'thumbnail';
+$custom_thumbnail_size = isset( $attributes['customThumbnailSize'] ) ? sanitize_key( $attributes['customThumbnailSize'] ) : '';
 $custom_class     = isset( $attributes['customClass'] ) ? sanitize_html_class( $attributes['customClass'] ) : '';
 $offset           = isset( $attributes['offset'] ) ? absint( $attributes['offset'] ) : 0;
 
 $allowed_sizes = array_merge( get_intermediate_image_sizes(), array( 'full' ) );
+if ( $custom_thumbnail_size ) {
+	$thumbnail_size = $custom_thumbnail_size;
+}
 if ( ! in_array( $thumbnail_size, $allowed_sizes, true ) ) {
 	$thumbnail_size = 'thumbnail';
 }
