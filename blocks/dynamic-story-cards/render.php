@@ -68,7 +68,29 @@ ob_start();
 			if ( post_password_required() ) {
 				continue;
 			}
-			$image_url = $show_image ? get_the_post_thumbnail_url( get_the_ID(), $thumbnail_size ) : '';
+			$image_url = '';
+			if ( $show_image ) {
+				$thumbnail_id = get_post_thumbnail_id( get_the_ID() );
+				if ( $thumbnail_id ) {
+					$selected_size = image_get_intermediate_size( $thumbnail_id, $thumbnail_size );
+					if ( ! empty( $selected_size['url'] ) ) {
+						$image_url = $selected_size['url'];
+					} else {
+						$thumbnail_fallback = image_get_intermediate_size( $thumbnail_id, 'thumbnail' );
+						if ( ! empty( $thumbnail_fallback['url'] ) ) {
+							$image_url = $thumbnail_fallback['url'];
+						} else {
+							$medium_fallback = image_get_intermediate_size( $thumbnail_id, 'medium' );
+							if ( ! empty( $medium_fallback['url'] ) ) {
+								$image_url = $medium_fallback['url'];
+							} else {
+								$full_fallback = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+								$image_url = ! empty( $full_fallback[0] ) ? $full_fallback[0] : '';
+							}
+						}
+					}
+				}
+			}
 			$card_classes = trim(
 				sprintf(
 					'ucla-card ucla-card__story %s %s',

@@ -49,6 +49,27 @@
 		event.stopPropagation();
 	}
 
+	function getPreviewImageSource( media, selectedSize ) {
+		var sizes = media && media.media_details && media.media_details.sizes;
+		if ( ! sizes ) {
+			return ( media && media.source_url ) || '';
+		}
+
+		if ( sizes[ selectedSize ] && sizes[ selectedSize ].source_url ) {
+			return sizes[ selectedSize ].source_url;
+		}
+
+		if ( sizes.thumbnail && sizes.thumbnail.source_url ) {
+			return sizes.thumbnail.source_url;
+		}
+
+		if ( sizes.medium && sizes.medium.source_url ) {
+			return sizes.medium.source_url;
+		}
+
+		return ( media && media.source_url ) || '';
+	}
+
 	blocks.registerBlockType( 'ucla/card', {
 		edit: function ( props ) {
 			var attributes = props.attributes;
@@ -325,7 +346,6 @@
 								? posts.map( function ( post ) {
 										var embedded = post._embedded || {};
 										var media = embedded['wp:featuredmedia'] && embedded['wp:featuredmedia'][0];
-										var sizes = media && media.media_details && media.media_details.sizes;
 										var selectedThumbnailSize = attributes.thumbnailSize || 'thumbnail';
 										var thumbnailFit = attributes.thumbnailFit || 'cover';
 										var objectFit = thumbnailFit === 'contain' ? 'contain' : 'cover';
@@ -342,11 +362,7 @@
 										}
 										var source =
 											attributes.showImage !== false
-												? ( sizes &&
-														sizes[ selectedThumbnailSize ] &&
-														sizes[ selectedThumbnailSize ].source_url ) ||
-												  ( media && media.source_url ) ||
-												  ''
+												? getPreviewImageSource( media, selectedThumbnailSize )
 												: '';
 										var postAuthor =
 											embedded.author && embedded.author[0] ? embedded.author[0].name : '';

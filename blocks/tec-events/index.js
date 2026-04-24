@@ -216,6 +216,7 @@
 					el( ServerSideRender, {
 						block: 'ucla/tec-events',
 						attributes,
+						skipBlockSupportAttributes: true,
 						EmptyResponsePlaceholder: () => el( SampleList, { attributes } ),
 						LoadingResponsePlaceholder: () =>
 							el(
