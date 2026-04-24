@@ -199,6 +199,30 @@ function ucla_plugin_ext_register_featured_image_rest_fields() {
 add_action( 'rest_api_init', 'ucla_plugin_ext_register_featured_image_rest_fields' );
 
 /**
+ * Disable responsive-controls overrides for core/image.
+ *
+ * The parent UCLA plugin responsive-controls layer rewrites style attributes
+ * and can interfere with native Image block aspect-ratio/crop behavior.
+ * We append core/image to the unsupported list from this extension plugin
+ * so the fix survives parent plugin updates.
+ *
+ * @param array $unsupported_blocks Unsupported block names.
+ * @return array
+ */
+function ucla_plugin_ext_disable_responsive_controls_for_core_image( $unsupported_blocks ) {
+	if ( ! is_array( $unsupported_blocks ) ) {
+		$unsupported_blocks = array();
+	}
+
+	if ( ! in_array( 'core/image', $unsupported_blocks, true ) ) {
+		$unsupported_blocks[] = 'core/image';
+	}
+
+	return $unsupported_blocks;
+}
+add_filter( 'ucla_unsupported_unresponsive_blocks', 'ucla_plugin_ext_disable_responsive_controls_for_core_image' );
+
+/**
  * Register blocks from modular block folders.
  *
  * Every block should live at: /blocks/<block-name>/block.json
