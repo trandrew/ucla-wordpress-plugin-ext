@@ -30,6 +30,11 @@ if ( ! function_exists( 'ucla_plugin_ext_sanitize_tec_background_color' ) ) {
 			return '';
 		}
 
+	$is_hex_with_alpha = 1 === preg_match( '/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color );
+	if ( $is_hex_with_alpha ) {
+		return $color;
+	}
+
 		$hex = sanitize_hex_color( $color );
 		if ( $hex ) {
 			return $hex;
@@ -54,6 +59,14 @@ if ( ! function_exists( 'ucla_plugin_ext_sanitize_tec_background_color' ) ) {
 		if ( $is_rgba ) {
 			return $color;
 		}
+
+	$is_rgb_space_alpha = 1 === preg_match(
+		'/^rgb\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s+(?:25[0-5]|2[0-4]\d|1?\d?\d)\s+(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*\/\s*(?:0|1|0?\.\d+|(?:100|\d{1,2})%)\s*\)$/i',
+		$color
+	);
+	if ( $is_rgb_space_alpha ) {
+		return $color;
+	}
 
 		return '';
 	}
