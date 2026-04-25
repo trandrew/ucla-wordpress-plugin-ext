@@ -4,6 +4,12 @@
 	padding: 0 !important;
 }
 
+/* Prevent accidental navigation when editing. */
+.wp-block-ucla-tec-events .ucla-tec a {
+	pointer-events: none;
+	cursor: default;
+}
+
 /* Editor-only tweaks for UCLA Events List block. */
 .ucla-tec.is-editor-sample {
 	position: relative;
