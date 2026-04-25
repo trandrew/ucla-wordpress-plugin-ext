@@ -45,6 +45,9 @@
 		edit: ( props ) => {
 			const { attributes, setAttributes } = props;
 			const blockProps = useBlockProps();
+			const previewAttributes = { ...attributes };
+			delete previewAttributes.style;
+			delete previewAttributes.layout;
 			const categories = useTerms( 'tribe_events_cat' );
 			const venues = useVenues();
 
@@ -215,9 +218,9 @@
 					blockProps,
 					el( ServerSideRender, {
 						block: 'ucla/tec-events',
-						attributes,
+						attributes: previewAttributes,
 						skipBlockSupportAttributes: true,
-						EmptyResponsePlaceholder: () => el( SampleList, { attributes } ),
+						EmptyResponsePlaceholder: () => el( SampleList, { attributes: previewAttributes } ),
 						LoadingResponsePlaceholder: () =>
 							el(
 								Placeholder,

@@ -199,29 +199,6 @@ function ucla_plugin_ext_register_featured_image_rest_fields() {
 add_action( 'rest_api_init', 'ucla_plugin_ext_register_featured_image_rest_fields' );
 
 /**
- * Disable parent responsive-controls mutations for core/image blocks.
- *
- * The parent plugin strips inline styles during render_block when a block has
- * responsiveControls. For Image blocks this removes aspect-ratio/object-fit
- * styles used for square/cropped display on the frontend.
- *
- * @param array $unsupported_blocks Parent unsupported block list.
- * @return array
- */
-function ucla_plugin_ext_disable_parent_responsive_controls_for_core_image( $unsupported_blocks ) {
-	if ( ! is_array( $unsupported_blocks ) ) {
-		$unsupported_blocks = array();
-	}
-
-	if ( ! in_array( 'core/image', $unsupported_blocks, true ) ) {
-		$unsupported_blocks[] = 'core/image';
-	}
-
-	return $unsupported_blocks;
-}
-add_filter( 'ucla_unsupported_unresponsive_blocks', 'ucla_plugin_ext_disable_parent_responsive_controls_for_core_image', 20 );
-
-/**
  * Register blocks from modular block folders.
  *
  * Every block should live at: /blocks/<block-name>/block.json

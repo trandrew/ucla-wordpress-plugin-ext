@@ -14,7 +14,8 @@
 	font-family: var(--ucla-font);
 	color: var(--ucla-text);
 	background: var(--ucla-surface);
-	padding: 56px clamp(24px, 5vw, 64px);
+	margin: 0;
+	padding: 0;
 }
 
 .ucla-tec *,
