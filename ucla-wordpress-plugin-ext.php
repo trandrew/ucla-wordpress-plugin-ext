@@ -251,6 +251,70 @@ function ucla_plugin_ext_strip_core_image_responsive_controls( $parsed_block ) {
 add_filter( 'render_block_data', 'ucla_plugin_ext_strip_core_image_responsive_controls', 10, 1 );
 
 /**
+ * Restore core/image inline dimension styles if another filter strips them.
+ *
+ * Some responsive-controls transforms can remove the Image block's inline
+ * aspect-ratio/object-fit styles, which makes frontend output ignore crop
+ * settings like "square". Re-apply only those image-dimension styles.
+ *
+ * @param string $block_content Rendered block HTML.
+ * @param array  $block         Parsed block data.
+ * @return string
+ */
+function ucla_plugin_ext_restore_core_image_dimension_styles( $block_content, $block ) {
+	if ( ! is_string( $block_content ) || '' === $block_content ) {
+		return $block_content;
+	}
+
+	if ( ! is_array( $block ) || ( $block['blockName'] ?? '' ) !== 'core/image' ) {
+		return $block_content;
+	}
+
+	$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
+	$styles = array();
+
+	// Build only dimension styles that belong on the image element.
+	if ( isset( $attrs['style']['dimensions'] ) && is_array( $attrs['style']['dimensions'] ) ) {
+		$compiled = wp_style_engine_get_styles(
+			array(
+				'dimensions' => $attrs['style']['dimensions'],
+			)
+		);
+		if ( ! empty( $compiled['css'] ) ) {
+			$styles[] = rtrim( trim( $compiled['css'] ), ';' );
+		}
+	}
+
+	if ( ! empty( $attrs['aspectRatio'] ) ) {
+		$styles[] = 'aspect-ratio:' . sanitize_text_field( (string) $attrs['aspectRatio'] );
+	}
+
+	if ( ! empty( $attrs['scale'] ) ) {
+		$styles[] = 'object-fit:' . sanitize_key( (string) $attrs['scale'] );
+	}
+
+	$styles = array_values( array_unique( array_filter( $styles ) ) );
+	if ( empty( $styles ) ) {
+		return $block_content;
+	}
+
+	$tag_processor = new WP_HTML_Tag_Processor( $block_content );
+	if ( ! $tag_processor->next_tag( 'img' ) ) {
+		return $block_content;
+	}
+
+	$existing_style = trim( (string) $tag_processor->get_attribute( 'style' ) );
+	if ( '' !== $existing_style ) {
+		return $block_content;
+	}
+
+	$tag_processor->set_attribute( 'style', implode( ';', $styles ) . ';' );
+
+	return $tag_processor->get_updated_html();
+}
+add_filter( 'render_block', 'ucla_plugin_ext_restore_core_image_dimension_styles', 20, 2 );
+
+/**
  * Register blocks from modular block folders.
  *
  * Every block should live at: /blocks/<block-name>/block.json
