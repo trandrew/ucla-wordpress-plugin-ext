@@ -12,7 +12,6 @@
 		Placeholder,
 		Spinner,
 		ColorPalette,
-		ColorPicker,
 	} = wp.components;
 	const ServerSideRender = wp.serverSideRender;
 	const { createElement: el, Fragment, useState, useEffect } = wp.element;
@@ -46,9 +45,11 @@
 		edit: ( props ) => {
 			const { attributes, setAttributes } = props;
 			const blockProps = useBlockProps();
-			if ( blockProps.style ) {
-				delete blockProps.style;
-			}
+			const blockWrapperStyle = {
+				...( blockProps.style || {} ),
+				margin: 0,
+				padding: 0,
+			};
 			const previewAttributes = { ...attributes };
 			delete previewAttributes.style;
 			delete previewAttributes.layout;
@@ -69,6 +70,12 @@
 					return venue ? venue.title?.rendered || venue.title : null;
 				} )
 				.filter( Boolean );
+			const stopPreviewNavigation = ( event ) => {
+				if ( event.target?.closest && event.target.closest( 'a' ) ) {
+					event.preventDefault();
+					event.stopPropagation();
+				}
+			};
 
 			return el(
 				Fragment,
@@ -214,26 +221,19 @@
 								{ name: 'UCLA Gold', color: '#ffd100' },
 								{ name: 'Transparent', color: 'transparent' },
 							],
+							enableAlpha: true,
 							onChange: ( value ) => setAttributes( { backgroundColor: value || '' } ),
 							clearable: true,
-						} ),
-						el( ColorPicker, {
-							color: attributes.backgroundColor || '#f2f2f2',
-							enableAlpha: true,
-							onChangeComplete: ( value ) =>
-								setAttributes( { backgroundColor: value?.color || '' } ),
-						} ),
-						el( TextControl, {
-							label: __( 'Custom CSS color value', 'ucla-wordpress-plugin-ext' ),
-							help: __( 'Supports hex, rgb/rgba, and transparent.', 'ucla-wordpress-plugin-ext' ),
-							value: attributes.backgroundColor || '',
-							onChange: ( value ) => setAttributes( { backgroundColor: value } ),
 						} )
 					)
 				),
 				el(
 					'div',
-					blockProps,
+					{
+						...blockProps,
+						style: blockWrapperStyle,
+						onClickCapture: stopPreviewNavigation,
+					},
 					el( ServerSideRender, {
 						block: 'ucla/tec-events',
 						attributes: previewAttributes,

@@ -5,7 +5,8 @@
 }
 
 /* Prevent accidental navigation when editing. */
-.wp-block-ucla-tec-events .ucla-tec a {
+.wp-block-ucla-tec-events .ucla-tec a,
+.block-editor-block-list__block[data-type="ucla/tec-events"] a {
 	pointer-events: none;
 	cursor: default;
 }
