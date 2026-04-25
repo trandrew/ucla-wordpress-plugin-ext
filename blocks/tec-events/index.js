@@ -48,6 +48,7 @@
 			const previewAttributes = { ...attributes };
 			delete previewAttributes.style;
 			delete previewAttributes.layout;
+			delete previewAttributes.responsiveControls;
 			const categories = useTerms( 'tribe_events_cat' );
 			const venues = useVenues();
 
