@@ -96,7 +96,18 @@ $attrs = wp_parse_args( is_array( $attributes ) ? $attributes : array(), $defaul
 $layout = in_array( $attrs['layout'], array( 'expanded', 'compact' ), true ) ? $attrs['layout'] : 'expanded';
 $date_range = in_array( $attrs['dateRange'], array( 'upcoming', 'this_month', 'next_30', 'custom' ), true ) ? $attrs['dateRange'] : 'upcoming';
 $count = max( 1, (int) $attrs['count'] );
-$background_color = ucla_plugin_ext_sanitize_tec_background_color( $attrs['backgroundColor'] );
+$custom_background_color = ucla_plugin_ext_sanitize_tec_background_color( $attrs['backgroundColor'] );
+$style_background_color = '';
+if (
+	isset( $attrs['style'] ) &&
+	is_array( $attrs['style'] ) &&
+	isset( $attrs['style']['color'] ) &&
+	is_array( $attrs['style']['color'] ) &&
+	isset( $attrs['style']['color']['background'] )
+) {
+	$style_background_color = ucla_plugin_ext_sanitize_tec_background_color( $attrs['style']['color']['background'] );
+}
+$background_color = $custom_background_color ? $custom_background_color : $style_background_color;
 
 $query_args = array(
 	'posts_per_page' => $count,

@@ -94,10 +94,6 @@
 	transition: padding 0.15s, background 0.15s;
 }
 
-.ucla-tec__item + .ucla-tec__item .ucla-tec__row {
-	padding-top: 0;
-}
-
 .ucla-tec__row:hover {
 	padding-left: 16px;
 	padding-right: 16px;

@@ -51,7 +51,6 @@
 				padding: 0,
 			};
 			const previewAttributes = { ...attributes };
-			delete previewAttributes.style;
 			delete previewAttributes.layout;
 			delete previewAttributes.responsiveControls;
 			const categories = useTerms( 'tribe_events_cat' );
@@ -253,6 +252,8 @@
 	} );
 
 	function SampleList( { attributes } ) {
+		const selectedBackgroundColor =
+			attributes.backgroundColor || attributes.style?.color?.background || '';
 		const samples = [
 			{
 				month: 'MAY',
@@ -292,7 +293,7 @@
 			'section',
 			{
 				className: `ucla-tec ucla-tec--${ attributes.layout } is-editor-sample`,
-				style: attributes.backgroundColor ? { backgroundColor: attributes.backgroundColor } : undefined,
+				style: selectedBackgroundColor ? { backgroundColor: selectedBackgroundColor } : undefined,
 			},
 			el(
 				'div',
