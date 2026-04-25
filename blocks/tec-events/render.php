@@ -19,42 +19,44 @@ if ( ! function_exists( 'tribe_get_events' ) ) {
  * @param mixed $value Raw background color attribute value.
  * @return string
  */
-function ucla_plugin_ext_sanitize_tec_background_color( $value ) {
-	if ( ! is_string( $value ) ) {
+if ( ! function_exists( 'ucla_plugin_ext_sanitize_tec_background_color' ) ) {
+	function ucla_plugin_ext_sanitize_tec_background_color( $value ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+
+		$color = trim( $value );
+		if ( '' === $color ) {
+			return '';
+		}
+
+		$hex = sanitize_hex_color( $color );
+		if ( $hex ) {
+			return $hex;
+		}
+
+		if ( 'transparent' === strtolower( $color ) ) {
+			return 'transparent';
+		}
+
+		$is_rgb = 1 === preg_match(
+			'/^rgb\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*\)$/i',
+			$color
+		);
+		if ( $is_rgb ) {
+			return $color;
+		}
+
+		$is_rgba = 1 === preg_match(
+			'/^rgba\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:0|1|0?\.\d+)\s*\)$/i',
+			$color
+		);
+		if ( $is_rgba ) {
+			return $color;
+		}
+
 		return '';
 	}
-
-	$color = trim( $value );
-	if ( '' === $color ) {
-		return '';
-	}
-
-	$hex = sanitize_hex_color( $color );
-	if ( $hex ) {
-		return $hex;
-	}
-
-	if ( 'transparent' === strtolower( $color ) ) {
-		return 'transparent';
-	}
-
-	$is_rgb = 1 === preg_match(
-		'/^rgb\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*\)$/i',
-		$color
-	);
-	if ( $is_rgb ) {
-		return $color;
-	}
-
-	$is_rgba = 1 === preg_match(
-		'/^rgba\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:0|1|0?\.\d+)\s*\)$/i',
-		$color
-	);
-	if ( $is_rgba ) {
-		return $color;
-	}
-
-	return '';
 }
 
 $defaults = array(
