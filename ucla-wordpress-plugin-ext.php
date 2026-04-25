@@ -271,29 +271,7 @@ function ucla_plugin_ext_restore_core_image_dimension_styles( $block_content, $b
 	}
 
 	$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
-	$styles = array();
-
-	// Build only dimension styles that belong on the image element.
-	if ( isset( $attrs['style']['dimensions'] ) && is_array( $attrs['style']['dimensions'] ) ) {
-		$compiled = wp_style_engine_get_styles(
-			array(
-				'dimensions' => $attrs['style']['dimensions'],
-			)
-		);
-		if ( ! empty( $compiled['css'] ) ) {
-			$styles[] = rtrim( trim( $compiled['css'] ), ';' );
-		}
-	}
-
-	if ( ! empty( $attrs['aspectRatio'] ) ) {
-		$styles[] = 'aspect-ratio:' . sanitize_text_field( (string) $attrs['aspectRatio'] );
-	}
-
-	if ( ! empty( $attrs['scale'] ) ) {
-		$styles[] = 'object-fit:' . sanitize_key( (string) $attrs['scale'] );
-	}
-
-	$styles = array_values( array_unique( array_filter( $styles ) ) );
+	$styles = ucla_plugin_ext_get_core_image_dimension_style_rules( $attrs );
 	if ( empty( $styles ) ) {
 		return $block_content;
 	}
@@ -304,15 +282,103 @@ function ucla_plugin_ext_restore_core_image_dimension_styles( $block_content, $b
 	}
 
 	$existing_style = trim( (string) $tag_processor->get_attribute( 'style' ) );
-	if ( '' !== $existing_style ) {
-		return $block_content;
-	}
-
-	$tag_processor->set_attribute( 'style', implode( ';', $styles ) . ';' );
+	$merged_styles = ucla_plugin_ext_merge_inline_style_rules( $existing_style, $styles );
+	$tag_processor->set_attribute( 'style', implode( ';', $merged_styles ) . ';' );
 
 	return $tag_processor->get_updated_html();
 }
-add_filter( 'render_block', 'ucla_plugin_ext_restore_core_image_dimension_styles', 20, 2 );
+add_filter( 'render_block', 'ucla_plugin_ext_restore_core_image_dimension_styles', 999, 2 );
+
+/**
+ * Extract core/image dimension style rules from block attributes.
+ *
+ * @param array $attrs Core image block attributes.
+ * @return array
+ */
+function ucla_plugin_ext_get_core_image_dimension_style_rules( $attrs ) {
+	$styles = array();
+	$dimensions = isset( $attrs['style']['dimensions'] ) && is_array( $attrs['style']['dimensions'] )
+		? $attrs['style']['dimensions']
+		: array();
+
+	if ( ! empty( $dimensions ) ) {
+		$compiled = wp_style_engine_get_styles(
+			array(
+				'dimensions' => $dimensions,
+			)
+		);
+		if ( ! empty( $compiled['css'] ) ) {
+			$styles[] = rtrim( trim( $compiled['css'] ), ';' );
+		}
+	}
+
+	$aspect_ratio = '';
+	if ( ! empty( $attrs['aspectRatio'] ) ) {
+		$aspect_ratio = (string) $attrs['aspectRatio'];
+	} elseif ( ! empty( $dimensions['aspectRatio'] ) ) {
+		$aspect_ratio = (string) $dimensions['aspectRatio'];
+	} elseif ( ! empty( $dimensions['aspect-ratio'] ) ) {
+		$aspect_ratio = (string) $dimensions['aspect-ratio'];
+	}
+	if ( '' !== $aspect_ratio ) {
+		$styles[] = 'aspect-ratio:' . sanitize_text_field( $aspect_ratio );
+	}
+
+	$scale = '';
+	if ( ! empty( $attrs['scale'] ) ) {
+		$scale = (string) $attrs['scale'];
+	} elseif ( ! empty( $dimensions['scale'] ) ) {
+		$scale = (string) $dimensions['scale'];
+	}
+	if ( '' !== $scale ) {
+		$styles[] = 'object-fit:' . sanitize_key( $scale );
+	}
+
+	return array_values( array_unique( array_filter( $styles ) ) );
+}
+
+/**
+ * Merge inline style rules while replacing duplicate properties.
+ *
+ * @param string $existing_style Existing style attribute value.
+ * @param array  $new_rules      New style rules to apply.
+ * @return array
+ */
+function ucla_plugin_ext_merge_inline_style_rules( $existing_style, $new_rules ) {
+	$style_map = array();
+	$rules = array_filter( array_map( 'trim', explode( ';', (string) $existing_style ) ) );
+
+	foreach ( $rules as $rule ) {
+		$parts = explode( ':', $rule, 2 );
+		if ( 2 !== count( $parts ) ) {
+			continue;
+		}
+		$property = trim( $parts[0] );
+		$value = trim( $parts[1] );
+		if ( '' !== $property && '' !== $value ) {
+			$style_map[ $property ] = $value;
+		}
+	}
+
+	foreach ( $new_rules as $rule ) {
+		$parts = explode( ':', (string) $rule, 2 );
+		if ( 2 !== count( $parts ) ) {
+			continue;
+		}
+		$property = trim( $parts[0] );
+		$value = trim( $parts[1] );
+		if ( '' !== $property && '' !== $value ) {
+			$style_map[ $property ] = $value;
+		}
+	}
+
+	$merged = array();
+	foreach ( $style_map as $property => $value ) {
+		$merged[] = $property . ':' . $value;
+	}
+
+	return $merged;
+}
 
 /**
  * Normalize core/image output from saved attrs on frontend render.
