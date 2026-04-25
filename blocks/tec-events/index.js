@@ -12,6 +12,7 @@
 		Placeholder,
 		Spinner,
 		ColorPalette,
+		ColorPicker,
 	} = wp.components;
 	const ServerSideRender = wp.serverSideRender;
 	const { createElement: el, Fragment, useState, useEffect } = wp.element;
@@ -45,6 +46,9 @@
 		edit: ( props ) => {
 			const { attributes, setAttributes } = props;
 			const blockProps = useBlockProps();
+			if ( blockProps.style ) {
+				delete blockProps.style;
+			}
 			const previewAttributes = { ...attributes };
 			delete previewAttributes.style;
 			delete previewAttributes.layout;
@@ -212,6 +216,12 @@
 							],
 							onChange: ( value ) => setAttributes( { backgroundColor: value || '' } ),
 							clearable: true,
+						} ),
+						el( ColorPicker, {
+							color: attributes.backgroundColor || '#f2f2f2',
+							enableAlpha: true,
+							onChangeComplete: ( value ) =>
+								setAttributes( { backgroundColor: value?.color || '' } ),
 						} ),
 						el( TextControl, {
 							label: __( 'Custom CSS color value', 'ucla-wordpress-plugin-ext' ),
