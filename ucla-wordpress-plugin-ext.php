@@ -315,6 +315,60 @@ function ucla_plugin_ext_restore_core_image_dimension_styles( $block_content, $b
 add_filter( 'render_block', 'ucla_plugin_ext_restore_core_image_dimension_styles', 20, 2 );
 
 /**
+ * Ensure editor runtime excludes core/image from responsive-controls hooks.
+ *
+ * This complements the PHP-side filters by patching the editor runtime list
+ * and removing the responsiveControls attribute from core/image registration.
+ * That prevents the parent plugin's editor-side responsive controls sync logic
+ * from mutating Image block attributes while editing/saving.
+ *
+ * @return void
+ */
+function ucla_plugin_ext_harden_editor_core_image_responsive_controls_exclusion() {
+	$script = <<<'JS'
+( function () {
+	if ( window.uclaResponsiveSupport && Array.isArray( window.uclaResponsiveSupport.responsiveUnsupportedBlocks ) ) {
+		if ( window.uclaResponsiveSupport.responsiveUnsupportedBlocks.indexOf( 'core/image' ) === -1 ) {
+			window.uclaResponsiveSupport.responsiveUnsupportedBlocks.push( 'core/image' );
+		}
+	}
+
+	if ( ! window.wp || ! window.wp.hooks || ! window.wp.hooks.addFilter ) {
+		return;
+	}
+
+	window.wp.hooks.addFilter(
+		'blocks.registerBlockType',
+		'ucla-wordpress-plugin-ext/disable-core-image-responsive-controls',
+		function ( settings, name ) {
+			if ( name !== 'core/image' || ! settings || ! settings.attributes ) {
+				return settings;
+			}
+
+			if ( ! Object.prototype.hasOwnProperty.call( settings.attributes, 'responsiveControls' ) ) {
+				return settings;
+			}
+
+			var nextSettings = Object.assign( {}, settings );
+			nextSettings.attributes = Object.assign( {}, settings.attributes );
+			delete nextSettings.attributes.responsiveControls;
+
+			return nextSettings;
+		},
+		1000
+	);
+} )();
+JS;
+
+	/*
+	 * Attach to wp-blocks so the script always prints in editor. It runs after
+	 * parent script localization and before subsequent editor interactions.
+	 */
+	wp_add_inline_script( 'wp-blocks', $script, 'after' );
+}
+add_action( 'enqueue_block_editor_assets', 'ucla_plugin_ext_harden_editor_core_image_responsive_controls_exclusion', 110 );
+
+/**
  * Register blocks from modular block folders.
  *
  * Every block should live at: /blocks/<block-name>/block.json
