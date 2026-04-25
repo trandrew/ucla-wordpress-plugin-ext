@@ -13,6 +13,50 @@ if ( ! function_exists( 'tribe_get_events' ) ) {
 	return '';
 }
 
+/**
+ * Sanitize supported background color values for this block.
+ *
+ * @param mixed $value Raw background color attribute value.
+ * @return string
+ */
+function ucla_plugin_ext_sanitize_tec_background_color( $value ) {
+	if ( ! is_string( $value ) ) {
+		return '';
+	}
+
+	$color = trim( $value );
+	if ( '' === $color ) {
+		return '';
+	}
+
+	$hex = sanitize_hex_color( $color );
+	if ( $hex ) {
+		return $hex;
+	}
+
+	if ( 'transparent' === strtolower( $color ) ) {
+		return 'transparent';
+	}
+
+	$is_rgb = 1 === preg_match(
+		'/^rgb\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*\)$/i',
+		$color
+	);
+	if ( $is_rgb ) {
+		return $color;
+	}
+
+	$is_rgba = 1 === preg_match(
+		'/^rgba\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:0|1|0?\.\d+)\s*\)$/i',
+		$color
+	);
+	if ( $is_rgba ) {
+		return $color;
+	}
+
+	return '';
+}
+
 $defaults = array(
 	'eyebrow'       => 'Events & Programs',
 	'heading'       => "What's happening at UCLA",
@@ -37,7 +81,7 @@ $attrs = wp_parse_args( is_array( $attributes ) ? $attributes : array(), $defaul
 $layout = in_array( $attrs['layout'], array( 'expanded', 'compact' ), true ) ? $attrs['layout'] : 'expanded';
 $date_range = in_array( $attrs['dateRange'], array( 'upcoming', 'this_month', 'next_30', 'custom' ), true ) ? $attrs['dateRange'] : 'upcoming';
 $count = max( 1, (int) $attrs['count'] );
-$background_color = ! empty( $attrs['backgroundColor'] ) ? sanitize_hex_color( $attrs['backgroundColor'] ) : '';
+$background_color = ucla_plugin_ext_sanitize_tec_background_color( $attrs['backgroundColor'] );
 
 $query_args = array(
 	'posts_per_page' => $count,

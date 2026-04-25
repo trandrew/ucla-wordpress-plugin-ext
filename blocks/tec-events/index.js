@@ -208,9 +208,16 @@
 								{ name: 'White', color: '#ffffff' },
 								{ name: 'UCLA Blue', color: '#2774ae' },
 								{ name: 'UCLA Gold', color: '#ffd100' },
+								{ name: 'Transparent', color: 'transparent' },
 							],
 							onChange: ( value ) => setAttributes( { backgroundColor: value || '' } ),
 							clearable: true,
+						} ),
+						el( TextControl, {
+							label: __( 'Custom CSS color value', 'ucla-wordpress-plugin-ext' ),
+							help: __( 'Supports hex, rgb/rgba, and transparent.', 'ucla-wordpress-plugin-ext' ),
+							value: attributes.backgroundColor || '',
+							onChange: ( value ) => setAttributes( { backgroundColor: value } ),
 						} )
 					)
 				),
