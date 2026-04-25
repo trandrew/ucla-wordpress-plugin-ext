@@ -315,6 +315,81 @@ function ucla_plugin_ext_restore_core_image_dimension_styles( $block_content, $b
 add_filter( 'render_block', 'ucla_plugin_ext_restore_core_image_dimension_styles', 20, 2 );
 
 /**
+ * Normalize core/image output from saved attrs on frontend render.
+ *
+ * Some editor-side mutations can leave saved HTML using full-size src/class
+ * even when block attrs specify another size slug (for example "square").
+ * Rebuild image source metadata from attachment ID + sizeSlug at render time.
+ *
+ * @param string $block_content Rendered block HTML.
+ * @param array  $block         Parsed block data.
+ * @return string
+ */
+function ucla_plugin_ext_normalize_core_image_size_output( $block_content, $block ) {
+	if ( ! is_string( $block_content ) || '' === $block_content ) {
+		return $block_content;
+	}
+
+	if ( ! is_array( $block ) || ( $block['blockName'] ?? '' ) !== 'core/image' ) {
+		return $block_content;
+	}
+
+	$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
+	$image_id = isset( $attrs['id'] ) ? absint( $attrs['id'] ) : 0;
+	$size_slug = isset( $attrs['sizeSlug'] ) ? sanitize_key( (string) $attrs['sizeSlug'] ) : '';
+
+	if ( ! $image_id || '' === $size_slug ) {
+		return $block_content;
+	}
+
+	$image_data = wp_get_attachment_image_src( $image_id, $size_slug );
+	if ( ! is_array( $image_data ) || empty( $image_data[0] ) ) {
+		return $block_content;
+	}
+
+	$tag_processor = new WP_HTML_Tag_Processor( $block_content );
+	if ( ! $tag_processor->next_tag( 'figure' ) ) {
+		return $block_content;
+	}
+
+	$figure_class = trim( (string) $tag_processor->get_attribute( 'class' ) );
+	if ( '' !== $figure_class ) {
+		$figure_classes = preg_split( '/\s+/', $figure_class );
+		if ( is_array( $figure_classes ) ) {
+			$figure_classes = array_filter(
+				$figure_classes,
+				static function ( $class_name ) {
+					return 0 !== strpos( (string) $class_name, 'size-' );
+				}
+			);
+			$figure_classes[] = 'size-' . $size_slug;
+			$tag_processor->set_attribute( 'class', implode( ' ', array_unique( $figure_classes ) ) );
+		}
+	}
+
+	if ( ! $tag_processor->next_tag( 'img' ) ) {
+		return $block_content;
+	}
+
+	$tag_processor->set_attribute( 'src', esc_url_raw( $image_data[0] ) );
+	$tag_processor->set_attribute( 'width', (string) absint( $image_data[1] ) );
+	$tag_processor->set_attribute( 'height', (string) absint( $image_data[2] ) );
+
+	$srcset = wp_get_attachment_image_srcset( $image_id, $size_slug );
+	if ( is_string( $srcset ) && '' !== $srcset ) {
+		$tag_processor->set_attribute( 'srcset', $srcset );
+	}
+
+	$sizes_attr = wp_get_attachment_image_sizes( $image_id, $size_slug );
+	if ( is_string( $sizes_attr ) && '' !== $sizes_attr ) {
+		$tag_processor->set_attribute( 'sizes', $sizes_attr );
+	}
+
+	return $tag_processor->get_updated_html();
+}
+add_filter( 'render_block', 'ucla_plugin_ext_normalize_core_image_size_output', 30, 2 );
+
+/**
  * Ensure editor runtime excludes core/image from responsive-controls hooks.
  *
  * This complements the PHP-side filters by patching the editor runtime list
