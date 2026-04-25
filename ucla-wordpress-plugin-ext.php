@@ -223,6 +223,34 @@ function ucla_plugin_ext_disable_responsive_controls_for_core_image( $unsupporte
 add_filter( 'ucla_unsupported_unresponsive_blocks', 'ucla_plugin_ext_disable_responsive_controls_for_core_image' );
 
 /**
+ * Remove responsiveControls from core/image blocks before render.
+ *
+ * The parent UCLA plugin's render_block hook mutates core/image output when
+ * responsiveControls is present, which can override the selected image size
+ * (for example rendering as full size instead of square). Unsetting the
+ * attribute here keeps native Image block size/crop behavior intact.
+ *
+ * @param array $parsed_block Parsed block data.
+ * @return array
+ */
+function ucla_plugin_ext_strip_core_image_responsive_controls( $parsed_block ) {
+	if ( ! is_array( $parsed_block ) ) {
+		return $parsed_block;
+	}
+
+	if ( ( $parsed_block['blockName'] ?? '' ) !== 'core/image' ) {
+		return $parsed_block;
+	}
+
+	if ( isset( $parsed_block['attrs']['responsiveControls'] ) ) {
+		unset( $parsed_block['attrs']['responsiveControls'] );
+	}
+
+	return $parsed_block;
+}
+add_filter( 'render_block_data', 'ucla_plugin_ext_strip_core_image_responsive_controls', 10, 1 );
+
+/**
  * Register blocks from modular block folders.
  *
  * Every block should live at: /blocks/<block-name>/block.json
